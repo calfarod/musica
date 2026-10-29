@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Partitura con ABCjs</title>
+    <!-- Importar la librería ABCjs -->
+    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/dist/abcjs-min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+        }
+        h2 { 
+            color: #333; 
+            margin-bottom: 20px; 
+        }
+        #paper {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 750px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Partitura con Letra Incorporada</h2>
+    
+    <!-- Contenedor de la partitura -->
+    <div id="paper"></div>
+
+    <script>
+        window.onload = function() {
+            // Usamos plantillas literales (comillas invertidas) para evitar errores de saltos de línea
+            var abcNotation = `
+X:1
+T:Estrellita
+M:4/4
+L:1/4
+K:C
+C C G G | A A G2 |
+w: Es-tre-lli-ta ¿dón-de es-tás?
+F F E E | D D C2 |
+w: Quie-ro sa-ber quién se-rás.
+            `;
+
+            ABCJS.renderAbc("paper", abcNotation, {
+                responsive: "resize",
+                scale: 1.2
+            });
+        };
+    </script>
+
+</body>
+</html>

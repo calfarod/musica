@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Partitura con VexFlow</title>
+    <!-- Importamos VexFlow -->
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Mi Partitura en el Navegador</h2>
+        <!-- Contenedor donde VexFlow insertará el pentagrama -->
+        <div id="boo"></div>
+    </div>
+
+    <script>
+        // Esperamos a que cargue completamente la ventana para asegurar que VexFlow esté disponible
+        window.addEventListener('load', () => {
+            const { Factory } = Vex.Flow;
+
+            // Creamos la fábrica apuntando al contenedor 'boo' con un ancho y alto definidos
+            const factory = new Factory({
+                renderer: { elementId: 'boo', width: 500, height: 160 }
+            });
+
+            const score = factory.EasyScore();
+            const system = factory.System();
+
+            // Dibujamos el pentagrama con clave de sol, compás de 4/4 y notas musicales
+            system.addStave({
+                voices: [
+                    score.voice(score.notes('C4/q, D4/q, E4/q, F4/q', { stem: 'up' }))
+                ]
+            })
+            .addClef('treble')
+            .addTimeSignature('4/4');
+
+            // Renderizar en pantalla
+            factory.draw();
+        });
+    </script>
+
+</body>
+</html>

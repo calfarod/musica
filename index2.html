@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Partitura</title>
+    <!-- NOMBRE DE ARCHIVO CORREGIDO: abcjs-basic-min.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.2/abcjs-basic-min.js"></script>
+    <!-- Respaldo automático en caso de que falle el primero -->
+    <script>
+        if (typeof ABCJS === "undefined") {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/dist/abcjs-basic-min.js"><\/script>');
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+        }
+        h2 { color: #333; margin-bottom: 20px; }
+        #paper {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 780px;
+            min-height: 180px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Partitura de Estrellita</h2>
+    
+    <div id="paper"></div>
+
+    <script>
+        var abcNotation = 
+            "X:1\n" +
+            "T:Estrellita ¿dónde estás?\n" +
+            "M:4/4\n" +
+            "L:1/4\n" +
+            "K:C\n" +
+            "C C G G | A A G2 | F F E E | D D C2 |\n" +
+            "w: Es-tre-lli-ta ¿dón-de_es-tás? Quie-ro ver-te titi-lar.";
+
+        window.addEventListener("load", function() {
+            if (typeof ABCJS !== "undefined") {
+                ABCJS.renderAbc("paper", abcNotation, {
+                    responsive: "resize"
+                });
+            } else {
+                document.getElementById("paper").innerHTML = 
+                    "<p style='color:red; text-align:center;'>Sigue bloqueado por la red o navegador. Usa la Solución 2 (100% sin internet).</p>";
+            }
+        });
+    </script>
+
+</body>
+</html>

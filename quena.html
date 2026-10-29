@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diccionario Visual de Digitaciones de Quena</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 30px;
+            color: #222;
+        }
+        h1 { text-align: center; margin-bottom: 5px; color: #1e293b; }
+        p.sub { text-align: center; color: #555; margin-bottom: 25px; }
+        .leyenda {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            background: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            font-size: 14px;
+        }
+        .seccion-octava {
+            margin-bottom: 40px;
+        }
+        .seccion-octava h2 {
+            background: #1e3a8a;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        .grid-notas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 15px;
+        }
+        .tarjeta-nota {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .nombre-nota {
+            font-weight: bold;
+            font-size: 16px;
+            color: #0f172a;
+        }
+        .cifrado {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Digitaciones Completas de la Quena (en Sol / G)</h1>
+    <p class="sub">Guía visual ordenada por octavas (Cromática: Naturales y Sostenidos)</p>
+
+    <div class="leyenda">
+        <span><strong>●</strong> Tapado (1)</span>
+        <span><strong>◐</strong> Medio tapado (0.5)</span>
+        <span><strong>○</strong> Abierto (0)</span>
+        <span><strong>[P]</strong> Orificio Trasero (Pulgar)</span>
+    </div>
+
+    <div id="contenedor-octavas"></div>
+
+<script>
+    // 1 = Tapado, 0.5 = Medio tapado, 0 = Abierto
+    // Formato de agujeros: [Pulgar, 1, 2, 3, 4, 5, 6]
+    const repertorioDigitaciones = [
+        {
+            titulo: "1ª Octava (Registro Grave / Medio - Soplo Suave)",
+            notas: [
+                { nombre: "Sol", cif: "G4",  h: [1, 1, 1, 1, 1, 1, 1] },
+                { nombre: "Sol#",cif: "G#4", h: [1, 1, 1, 1, 1, 1, 0.5] },
+                { nombre: "La",  cif: "A4",  h: [1, 1, 1, 1, 1, 1, 0] },
+                { nombre: "La#", cif: "A#4", h: [1, 1, 1, 1, 1, 0.5, 0] },
+                { nombre: "Si",  cif: "B4",  h: [1, 1, 1, 1, 1, 0, 0] },
+                { nombre: "Do",  cif: "C5",  h: [1, 1, 1, 1, 0, 0, 0] },
+                { nombre: "Do#", cif: "C#5", h: [1, 1, 1, 0.5, 0, 0, 0] },
+                { nombre: "Re",  cif: "D5",  h: [1, 1, 1, 0, 0, 0, 0] },
+                { nombre: "Re#", cif: "D#5", h: [1, 1, 0.5, 0, 0, 0, 0] },
+                { nombre: "Mi",  cif: "E5",  h: [1, 1, 0, 0, 0, 0, 0] },
+                { nombre: "Fa",  cif: "F5",  h: [1, 0.5, 0, 0, 0, 0, 0] },
+                { nombre: "Fa#", cif: "F#5", h: [1, 0, 0, 0, 0, 0, 0] }
+            ]
+        },
+        {
+            titulo: "2ª Octava (Registro Agudo - Soplo Firme)",
+            notas: [
+                { nombre: "Sol", cif: "G5",  h: [0, 0, 1, 0, 0, 0, 0] },
+                { nombre: "Sol#",cif: "G#5", h: [1, 1, 1, 1, 1, 1, 0.5] },
+                { nombre: "La",  cif: "A5",  h: [1, 1, 1, 1, 1, 1, 0] },
+                { nombre: "La#", cif: "A#5", h: [1, 1, 1, 1, 1, 0.5, 0] },
+                { nombre: "Si",  cif: "B5",  h: [1, 1, 1, 1, 1, 0, 0] },
+                { nombre: "Do",  cif: "C6",  h: [1, 1, 1, 1, 0, 0, 0] },
+                { nombre: "Do#", cif: "C#6", h: [1, 1, 1, 0.5, 0, 0, 0] },
+                { nombre: "Re",  cif: "D6",  h: [0, 1, 1, 0, 0, 0, 0] },
+                { nombre: "Re#", cif: "D#6", h: [0, 1, 0.5, 0, 0, 0, 0] },
+                { nombre: "Mi",  cif: "E6",  h: [0, 1, 0, 0, 0, 0, 0] },
+                { nombre: "Fa",  cif: "F6",  h: [1, 0, 1, 1, 1, 0, 0] },
+                { nombre: "Fa#", cif: "F#6", h: [1, 0, 0, 0, 0, 0, 0] }
+            ]
+        },
+        {
+            titulo: "3ª Octava (Registro Sobreagudo - Soplo de Alta Presión)",
+            notas: [
+                { nombre: "Sol", cif: "G6",  h: [0, 1, 0, 1, 1, 1, 0] },
+                { nombre: "Sol#",cif: "G#6", h: [0, 0, 1, 1, 1, 0, 1] },
+                { nombre: "La",  cif: "A6",  h: [0, 0, 1, 1, 0, 1, 0] },
+                { nombre: "La#", cif: "A#6", h: [1, 1, 0, 0, 1, 1, 0] },
+                { nombre: "Si",  cif: "B6",  h: [0, 1, 0, 1, 0, 1, 0] },
+                { nombre: "Do",  cif: "C7",  h: [1, 0, 1, 0, 1, 0, 0] }
+            ]
+        }
+    ];
+
+    function dibujarAgujero(cx, cy, r, estado, idClip) {
+        if (estado === 1) {
+            return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#1e293b" stroke="#1e293b" stroke-width="2"/>`;
+        } else if (estado === 0) {
+            return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>`;
+        } else {
+            // Medio tapado
+            return `
+                <defs>
+                    <clipPath id="${idClip}">
+                        <rect x="${cx - r}" y="${cy - r}" width="${r}" height="${r * 2}" />
+                    </clipPath>
+                </defs>
+                <circle cx="${cx}" cy="${cy}" r="${r}" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+                <circle cx="${cx}" cy="${cy}" r="${r}" fill="#1e293b" clip-path="url(#${idClip})"/>
+            `;
+        }
+    }
+
+    function generarDiagramaSVG(agujeros, idUnico) {
+        let svg = `<svg width="80" height="210" viewBox="0 0 80 210" xmlns="http://www.w3.org/2000/svg">`;
+
+        // Cuerpo de madera de la quena
+        svg += `<rect x="30" y="10" width="32" height="190" rx="4" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>`;
+        // Escotadura (bisel de soplo arriba)
+        svg += `<path d="M 40 10 Q 46 22 52 10" fill="#fff" stroke="#b45309" stroke-width="2"/>`;
+
+        // Agujero trasero (Pulgar P) a la izquierda
+        svg += `<text x="14" y="38" font-size="10" fill="#64748b" text-anchor="middle">P</text>`;
+        svg += dibujarAgujero(14, 50, 7, agujeros[0], `clip_p_${idUnico}`);
+
+        // Línea separadora entre mano izquierda (1-3) y mano derecha (4-6)
+        svg += `<line x1="26" y1="115" x2="66" y2="115" stroke="#b45309" stroke-dasharray="3,3" stroke-width="1"/>`;
+
+        // 6 Agujeros frontales
+        for (let i = 1; i <= 6; i++) {
+            let cy = 35 + (i * 24) + (i > 3 ? 6 : 0);
+            svg += dibujarAgujero(46, cy, 7.5, agujeros[i], `clip_${i}_${idUnico}`);
+        }
+
+        svg += `</svg>`;
+        return svg;
+    }
+
+    const contenedor = document.getElementById("contenedor-octavas");
+    repertorioDigitaciones.forEach((octava, idxOct) => {
+        let htmlSeccion = `<div class="seccion-octava"><h2>${octava.titulo}</h2><div class="grid-notas">`;
+        octava.notas.forEach((nota, idxNota) => {
+            let idUnico = `${idxOct}_${idxNota}`;
+            htmlSeccion += `
+                <div class="tarjeta-nota">
+                    <div class="nombre-nota">${nota.nombre}</div>
+                    <div class="cifrado">${nota.cif}</div>
+                    ${generarDiagramaSVG(nota.h, idUnico)}
+                </div>
+            `;
+        });
+        htmlSeccion += `</div></div>`;
+        contenedor.innerHTML += htmlSeccion;
+    });
+</script>
+
+</body>
+</html>
